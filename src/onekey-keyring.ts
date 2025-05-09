@@ -208,6 +208,7 @@ export class OneKeyKeyring extends EventEmitter {
     return new Promise((resolve, reject) => {
       const from = this.unlockedAccount;
       const to = from + n;
+      const newAccounts: string[] = [];
 
       const paths: string[] = [];
       for (let i = from; i < to; i++) {
@@ -227,6 +228,7 @@ export class OneKeyKeyring extends EventEmitter {
             }
             if (!this.accounts.includes(address)) {
               this.accounts = [...this.accounts, address];
+              newAccounts.push(address);
             }
             if (!this.accountDetails[address]) {
               this.accountDetails[address] = {
@@ -237,7 +239,7 @@ export class OneKeyKeyring extends EventEmitter {
             }
             this.page = 0;
           }
-          resolve(this.accounts);
+          resolve(newAccounts);
         })
         .catch((e) => {
           reject(e);
